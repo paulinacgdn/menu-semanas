@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menú de Léah 🥄</title>
+  <meta name="theme-color" content="#0ea5e9" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #fafaf8;
+      font-family: 'DM Sans', sans-serif;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    .header {
+      padding: 24px 20px 20px;
+      text-align: center;
+      transition: background 0.4s;
+    }
+    .header-emoji { font-size: 32px; display: block; margin-bottom: 4px; }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 900;
+      color: white; letter-spacing: -0.5px; margin-bottom: 2px;
+    }
+    .header p { font-size: 12px; color: rgba(255,255,255,0.85); }
+
+    .semana-selector {
+      display: flex; gap: 8px; padding: 12px 16px 0;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .semana-btn {
+      flex-shrink: 0; padding: 8px 14px; border-radius: 20px;
+      border: none; font-size: 13px; cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    }
+
+    .tema-box {
+      margin: 12px 16px 0; border-radius: 14px;
+      padding: 12px 14px; border-left: 4px solid;
+    }
+    .tema-titulo { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+    .tema-desc { font-size: 12px; color: #666; line-height: 1.5; }
+
+    .tabs {
+      display: flex; background: white;
+      border-bottom: 2px solid #f0ece8;
+      margin: 12px 0 0;
+    }
+    .tab {
+      flex: 1; padding: 11px 0; border: none; background: none;
+      font-size: 13px; cursor: pointer; color: #999;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    }
+    .tab.active { font-weight: 800; }
+
+    .content { padding: 16px; }
+
+    .dia-selector {
+      display: flex; gap: 6px; overflow-x: auto;
+      padding-bottom: 4px; scrollbar-width: none;
+    }
+    .dia-btn {
+      flex-shrink: 0; padding: 6px 11px; border-radius: 20px;
+      border: none; font-size: 12px; cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    }
+
+    .fecha-label {
+      margin: 10px 0 8px; font-size: 11px; font-weight: 700;
+      color: #bbb; text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    .card {
+      background: white; border-radius: 16px; overflow: hidden;
+      margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .card-stripe { height: 3px; }
+    .card-body { padding: 14px 16px; }
+    .card-momento {
+      font-size: 10px; font-weight: 800; color: #ccc;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+    }
+    .card-plato {
+      font-size: 16px; font-weight: 800; color: #1a1a2e;
+      line-height: 1.4; margin-bottom: 8px;
+    }
+    .badge {
+      font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
+      display: inline-block; margin-bottom: 4px;
+    }
+    .badge-nuevo { background: #dcfce7; color: #166534; }
+    .badge-repeat { background: #fef3c7; color: #92400e; }
+    .card-nota {
+      margin-top: 8px; background: #f8f8f8; border-radius: 10px;
+      padding: 7px 10px; font-size: 12px; color: #666; line-height: 1.5;
+      border-left: 3px solid;
+    }
+
+    .leyenda {
+      display: flex; gap: 12px; margin-top: 4px;
+    }
+    .leyenda-item { display: flex; align-items: center; gap: 4px; }
+    .leyenda-badge {
+      border-radius: 6px; padding: 2px 6px;
+      font-size: 10px; font-weight: 700;
+    }
+    .leyenda-text { font-size: 11px; color: #999; }
+
+    .tip-card {
+      background: white; border-radius: 14px; padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      display: flex; gap: 12px; align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .tip-icon { font-size: 22px; flex-shrink: 0; }
+    .tip-text { font-size: 13px; color: #444; line-height: 1.6; margin: 0; }
+
+    .nuevos-card {
+      background: white; border-radius: 14px; padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-top: 10px;
+    }
+    .nuevos-titulo {
+      font-size: 12px; font-weight: 800; color: #999;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
+    }
+    .nuevos-semana { margin-bottom: 10px; }
+    .nuevos-semana-label { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    .nuevos-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .nuevo-chip {
+      font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header" id="header">
+  <span class="header-emoji">🥄</span>
+  <h1>Menú de Léah</h1>
+  <p>Plan 3 semanas · Yooji + casero</p>
+</div>
+
+<div class="semana-selector" id="semana-selector"></div>
+<div class="tema-box" id="tema-box">
+  <div class="tema-titulo" id="tema-titulo"></div>
+  <div class="tema-desc" id="tema-desc"></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" id="tab-menu" onclick="setTab('menu')">📅 Menú</button>
+  <button class="tab" id="tab-tips" onclick="setTab('tips')">💡 Tips</button>
+</div>
+
+<div class="content" id="content"></div>
+
+<script>
+const semanas = [
+  {
+    numero: 1, titulo: "Semana 1", subtitulo: "1–7 junio",
+    tema: "🐟 Introducción al mar",
+    descripcion: "Colin y salmón repetidos 3-4 veces para exposición al alérgeno. Purés y carbos ya conocidos.",
+    color: "#0ea5e9", colorLight: "#e0f2fe",
+    dias: [
+      { dia: "Lunes", emoji: "🌊", fecha: "1 jun",
+        comida: { plato: "Colin Yooji + puré de carotte Yooji + fusili", nuevo: "🆕 Colin (merluza)", tipo: "nuevo", nota: "Primera vez pescado — observar todo el día" },
+        cena: { plato: "Yogurt griego con banana + avena", nuevo: null, nota: null } },
+      { dia: "Martes", emoji: "🐟", fecha: "2 jun",
+        comida: { plato: "Colin Yooji + puré de patate douce Yooji + fusili", nuevo: "🔁 Colin x2", tipo: "repeat", nota: "Segunda exposición al colin" },
+        cena: { plato: "Compota de pera y manzana + tostada baguette", nuevo: "🆕 Baguette (miga)", tipo: "nuevo", nota: null } },
+      { dia: "Miércoles", emoji: "🌿", fecha: "3 jun",
+        comida: { plato: "Colin Yooji + puré de calabaza + fusili", nuevo: "🔁 Colin x3", tipo: "repeat", nota: "Tercera exposición al colin ✅" },
+        cena: { plato: "Yogurt griego con fresa + avena", nuevo: null, nota: null } },
+      { dia: "Jueves", emoji: "🍊", fecha: "4 jun",
+        comida: { plato: "Salmón Yooji + puré de carotte Yooji + fusili", nuevo: "🆕 Salmón Yooji", tipo: "nuevo", nota: "Primera vez salmón — observar todo el día" },
+        cena: { plato: "Compota de manzana + tostada baguette", nuevo: null, nota: null } },
+      { dia: "Viernes", emoji: "🐠", fecha: "5 jun",
+        comida: { plato: "Salmón Yooji + puré de patate douce Yooji + fusili", nuevo: "🔁 Salmón x2", tipo: "repeat", nota: "Segunda exposición al salmón" },
+        cena: { plato: "Yogurt griego con banana + avena", nuevo: null, nota: null } },
+      { dia: "Sábado", emoji: "🌸", fecha: "6 jun",
+        comida: { plato: "Colin Yooji + puré de carotte Yooji + fusili", nuevo: "🔁 Colin x4", tipo: "repeat", nota: "Refuerzo colin" },
+        cena: { plato: "Yogurt con fresa + avena", nuevo: null, nota: null } },
+      { dia: "Domingo", emoji: "☀️", fecha: "7 jun",
+        comida: { plato: "Salmón Yooji + puré de patate douce Yooji + fusili", nuevo: "🔁 Salmón x3", tipo: "repeat", nota: "Refuerzo salmón ✅" },
+        cena: { plato: "Compota de pera + tostada baguette", nuevo: null, nota: null } },
+    ],
+  },
+  {
+    numero: 2, titulo: "Semana 2", subtitulo: "8–14 junio",
+    tema: "🍗 Aves + verduras nuevas",
+    descripcion: "Introducción de poulet y dinde Yooji. Primeras verduras nuevas: brocoli, petit pois, poireau.",
+    color: "#f97316", colorLight: "#fff7ed",
+    dias: [
+      { dia: "Lunes", emoji: "🍗", fecha: "8 jun",
+        comida: { plato: "Poulet Yooji + puré de brocoli Yooji + fusili", nuevo: "🆕 Poulet + 🆕 Brocoli Yooji", tipo: "nuevo", nota: "Dos nuevos — observar bien" },
+        cena: { plato: "Yogurt griego con banana + avena", nuevo: null, nota: null } },
+      { dia: "Martes", emoji: "🥦", fecha: "9 jun",
+        comida: { plato: "Poulet Yooji + puré de brocoli Yooji + baguette miga", nuevo: "🔁 Poulet x2 + Brocoli x2", tipo: "repeat", nota: null },
+        cena: { plato: "Compota de manzana + tostada baguette", nuevo: null, nota: null } },
+      { dia: "Miércoles", emoji: "🦃", fecha: "10 jun",
+        comida: { plato: "Dinde Yooji + puré de petit pois Yooji + fusili", nuevo: "🆕 Dinde (pavo) + 🆕 Petit pois", tipo: "nuevo", nota: "Primera vez pavo — observar todo el día" },
+        cena: { plato: "Yogurt con fresa + avena", nuevo: null, nota: null } },
+      { dia: "Jueves", emoji: "🌱", fecha: "11 jun",
+        comida: { plato: "Dinde Yooji + puré de petit pois Yooji + fusili", nuevo: "🔁 Dinde x2 + Petit pois x2", tipo: "repeat", nota: null },
+        cena: { plato: "Compota de pera + tostada baguette", nuevo: null, nota: null } },
+      { dia: "Viernes", emoji: "🐟", fecha: "12 jun",
+        comida: { plato: "Colin Yooji + puré de poireau Yooji + fusili", nuevo: "🆕 Poireau (puerro)", tipo: "nuevo", nota: "Colin ya conocido — nuevo solo el puerro" },
+        cena: { plato: "Yogurt griego con banana + avena", nuevo: null, nota: null } },
+      { dia: "Sábado", emoji: "🍗", fecha: "13 jun",
+        comida: { plato: "Poulet Yooji + puré de carotte Yooji + baguette miga", nuevo: "🔁 Poulet x3", tipo: "repeat", nota: null },
+        cena: { plato: "Yogurt con fresa + avena", nuevo: null, nota: null } },
+      { dia: "Domingo", emoji: "🔄", fecha: "14 jun",
+        comida: { plato: "Salmón Yooji + puré de brocoli Yooji + fusili", nuevo: "🔁 Salmón + Brocoli", tipo: "repeat", nota: "Combinación libre con probados ✅" },
+        cena: { plato: "Compota de manzana y pera + tostada baguette", nuevo: null, nota: null } },
+    ],
+  },
+  {
+    numero: 3, titulo: "Semana 3", subtitulo: "15–21 junio",
+    tema: "🌈 Combinación libre + quinoa",
+    descripcion: "Todo lo probado combinado libremente. Introducción de quinoa como nuevo carbo.",
+    color: "#8b5cf6", colorLight: "#f5f3ff",
+    dias: [
+      { dia: "Lunes", emoji: "🌾", fecha: "15 jun",
+        comida: { plato: "Boeuf Yooji + puré de panais Yooji + quinoa", nuevo: "🆕 Quinoa + 🆕 Panais", tipo: "nuevo", nota: "Quinoa bien cocida y blandita" },
+        cena: { plato: "Yogurt griego con banana + avena", nuevo: null, nota: null } },
+      { dia: "Martes", emoji: "🐟", fecha: "16 jun",
+        comida: { plato: "Colin Yooji + puré de potiron Yooji + quinoa", nuevo: "🔁 Quinoa x2 + 🆕 Potiron Yooji", tipo: "nuevo", nota: null },
+        cena: { plato: "Compota de pera + tostada baguette", nuevo: null, nota: null } },
+      { dia: "Miércoles", emoji: "🍗", fecha: "17 jun",
+        comida: { plato: "Poulet Yooji + puré de poireau Yooji + fusili", nuevo: null, tipo: null, nota: null },
+        cena: { plato: "Yogurt con fresa + avena", nuevo: null, nota: null } },
+      { dia: "Jueves", emoji: "🐠", fecha: "18 jun",
+        comida: { plato: "Salmón Yooji + puré de panais Yooji + quinoa", nuevo: "🔁 Quinoa x3 + Panais x2", tipo: "repeat", nota: null },
+        cena: { plato: "Compota de manzana + tostada baguette", nuevo: null, nota: null } },
+      { dia: "Viernes", emoji: "🦃", fecha: "19 jun",
+        comida: { plato: "Dinde Yooji + puré de brocoli Yooji + fusili", nuevo: null, tipo: null, nota: null },
+        cena: { plato: "Yogurt griego con banana + avena", nuevo: null, nota: null } },
+      { dia: "Sábado", emoji: "🥩", fecha: "20 jun",
+        comida: { plato: "Boeuf Yooji + puré de petit pois Yooji + quinoa", nuevo: null, tipo: null, nota: null },
+        cena: { plato: "Yogurt con fresa + avena", nuevo: null, nota: null } },
+      { dia: "Domingo", emoji: "🌟", fecha: "21 jun",
+        comida: { plato: "Lo que más le gustó de las 3 semanas", nuevo: null, tipo: null, nota: "¡Día libre! 🎉" },
+        cena: { plato: "Yogurt griego con fruta + avena", nuevo: null, nota: null } },
+    ],
+  },
+];
+
+const tips = [
+  { icon: "🐟", texto: "Colin y salmón se repiten 3-4 veces en semana 1 — la exposición repetida reduce el riesgo alérgico" },
+  { icon: "⚠️", texto: "Introduce alimentos nuevos siempre al mediodía para tener el día entero para observar reacciones" },
+  { icon: "🥡", texto: "Yooji: descongela el cubo a temperatura ambiente ~30 min o 1 min microondas. Mezcla directo con el puré" },
+  { icon: "🍝", texto: "Fusili y quinoa: cocina al dente pero un poquito más blando. Sin sal" },
+  { icon: "🥖", texto: "Baguette: solo la miga suave de adentro, sin costra. Que sea del día" },
+  { icon: "🚫", texto: "Sin sal · Sin azúcar · Sin miel hasta el año" },
+];
+
+const nuevosPorSemana = [
+  { semana: "Semana 1", color: "#0ea5e9", items: ["Colin (merluza)", "Salmón Yooji", "Baguette (miga)"] },
+  { semana: "Semana 2", color: "#f97316", items: ["Poulet Yooji", "Dinde (pavo)", "Brocoli Yooji", "Petit pois Yooji", "Poireau Yooji"] },
+  { semana: "Semana 3", color: "#8b5cf6", items: ["Quinoa", "Panais Yooji", "Potiron Yooji"] },
+];
+
+let semanaIdx = 0;
+let diaIdx = 0;
+let tabActual = "menu";
+
+function render() {
+  const s = semanas[semanaIdx];
+  const d = s.dias[diaIdx];
+
+  // Header
+  document.getElementById("header").style.background = `linear-gradient(135deg, ${s.color}, ${s.color}cc)`;
+
+  // Semana selector
+  document.getElementById("semana-selector").innerHTML = semanas.map((sem, i) => `
+    <button class="semana-btn" onclick="setSemana(${i})"
+      style="background:${semanaIdx===i ? s.color : 'white'};color:${semanaIdx===i ? 'white' : '#666'};font-weight:${semanaIdx===i ? 800 : 400}">
+      ${sem.titulo}
+    </button>
+  `).join("");
+
+  // Tema
+  const temaBox = document.getElementById("tema-box");
+  temaBox.style.background = s.colorLight;
+  temaBox.style.borderLeftColor = s.color;
+  document.getElementById("tema-titulo").style.color = s.color;
+  document.getElementById("tema-titulo").textContent = `${s.tema} · ${s.subtitulo}`;
+  document.getElementById("tema-desc").textContent = s.descripcion;
+
+  // Tabs
+  document.getElementById("tab-menu").style.color = tabActual === "menu" ? s.color : "#999";
+  document.getElementById("tab-menu").style.borderBottomColor = tabActual === "menu" ? s.color : "transparent";
+  document.getElementById("tab-tips").style.color = tabActual === "tips" ? s.color : "#999";
+  document.getElementById("tab-tips").style.borderBottomColor = tabActual === "tips" ? s.color : "transparent";
+
+  const content = document.getElementById("content");
+
+  if (tabActual === "menu") {
+    content.innerHTML = `
+      <div class="dia-selector">
+        ${s.dias.map((dia, i) => `
+          <button class="dia-btn" onclick="setDia(${i})"
+            style="background:${diaIdx===i ? s.color : 'white'};color:${diaIdx===i ? 'white' : '#666'};font-weight:${diaIdx===i ? 700 : 400}">
+            ${dia.emoji} ${dia.dia}
+          </button>
+        `).join("")}
+      </div>
+      <p class="fecha-label">${d.fecha}</p>
+      ${renderCard(d.comida, "comida", s.color)}
+      ${renderCard(d.cena, "cena", s.color)}
+      <div class="leyenda">
+        <div class="leyenda-item">
+          <span class="leyenda-badge" style="background:#dcfce7;color:#166534">🆕</span>
+          <span class="leyenda-text">Nuevo</span>
+        </div>
+        <div class="leyenda-item">
+          <span class="leyenda-badge" style="background:#fef3c7;color:#92400e">🔁</span>
+          <span class="leyenda-text">Reexposición</span>
+        </div>
+      </div>
+    `;
+  } else {
+    content.innerHTML = `
+      <p style="margin:0 0 4px;font-size:14px;color:#666;">Guía rápida para estas 3 semanas 👇</p>
+      ${tips.map(t => `
+        <div class="tip-card">
+          <span class="tip-icon">${t.icon}</span>
+          <p class="tip-text">${t.texto}</p>
+        </div>
+      `).join("")}
+      <div class="nuevos-card">
+        <div class="nuevos-titulo">🆕 Nuevos por semana</div>
+        ${nuevosPorSemana.map(ns => `
+          <div class="nuevos-semana">
+            <div class="nuevos-semana-label" style="color:${ns.color}">${ns.semana}</div>
+            <div class="nuevos-chips">
+              ${ns.items.map(item => `
+                <span class="nuevo-chip" style="background:${ns.color}18;color:${ns.color}">${item}</span>
+              `).join("")}
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+}
+
+function renderCard(item, momento, color) {
+  const stripeStyle = momento === "comida"
+    ? `background:linear-gradient(90deg,${color},${color}88)`
+    : "background:linear-gradient(90deg,#a78bfa,#c4b5fd)";
+  const label = momento === "comida" ? "☀️ Comida" : "🌙 Cena";
+
+  return `
+    <div class="card">
+      <div class="card-stripe" style="${stripeStyle}"></div>
+      <div class="card-body">
+        <div class="card-momento">${label}</div>
+        <div class="card-plato">${item.plato}</div>
+        ${item.nuevo ? `<span class="badge ${item.tipo === 'nuevo' ? 'badge-nuevo' : 'badge-repeat'}">${item.nuevo}</span>` : ""}
+        ${item.nota ? `<div class="card-nota" style="border-left-color:${color}">💬 ${item.nota}</div>` : ""}
+      </div>
+    </div>
+  `;
+}
+
+function setSemana(i) { semanaIdx = i; diaIdx = 0; render(); }
+function setDia(i) { diaIdx = i; render(); }
+function setTab(t) { tabActual = t; render(); }
+
+render();
+</script>
+</body>
+</html>
